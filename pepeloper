@@ -1,0 +1,15 @@
+#! /usr/bin/env php
+
+<?php
+
+use Symfony\Component\Console\Application;
+use Pepeloper\TemplateParser\Template;
+require 'vendor/autoload.php';
+
+$template = new Template();
+
+$app = new Application('Pepeloper', '1.0');
+
+$app->add(new Pepeloper\Redirections($template));
+
+$app->run();

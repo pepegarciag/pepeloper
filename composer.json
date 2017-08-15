@@ -1,7 +1,9 @@
 {
   "name": "pepegarciag/pepeloper",
   "description": "This is a package to help you doing common tasks.",
-  "keywords": ["pepeloper"],
+  "keywords": [
+    "pepeloper"
+  ],
   "type": "package",
   "require": {
     "symfony/console": "~2.3|~3.0",
@@ -17,11 +19,11 @@
   "autoload": {
     "psr-4": {
       "Pepeloper\\": "src",
-      "Pepeloper\\TemplateParser\\": "src/libs/TemplateParser"
+      "Pepeloper\\TemplateParser\\": "src/libs/TemplateParser",
+      "Pepeloper\\CsvParser\\": "src/libs/CsvParser"
     }
   },
   "bin": [
     "pepeloper"
-  ],
-  "minimum-stability": "dev"
+  ]
 }

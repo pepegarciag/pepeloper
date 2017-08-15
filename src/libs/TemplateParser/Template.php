@@ -7,107 +7,105 @@ namespace Pepeloper\TemplateParser;
  *
  * @package Pepeloper\TemplateParser
  */
-class Template {
+class Template
+{
 
-  /**
-   * The open tag for variables
-   *
-   * @var string
-   */
-  protected $oTag = '{{';
+    /**
+     * The open tag for variables
+     *
+     * @var string
+     */
+    protected $oTag = '{{';
 
-  /**
-   * The close tag for variables
-   *
-   * @var string
-   */
-  protected $cTag = '}}';
+    /**
+     * The close tag for variables
+     *
+     * @var string
+     */
+    protected $cTag = '}}';
 
-  /**
-   * Array with keys as names variables and values to be replaced.
-   *
-   * @var array
-   */
-  protected $values;
+    /**
+     * Array with keys as names variables and values to be replaced.
+     *
+     * @var array
+     */
+    protected $values;
 
-  /**
-   * The template file to be used.
-   *
-   * @var string
-   */
-  protected $template;
+    /**
+     * The template file to be used.
+     *
+     * @var string
+     */
+    protected $template;
 
-  /**
-   * Template constructor.
-   *
-   * @param string $template
-   */
-  public function __construct($template = '') {
-    $this->template = empty($template) ? $this->getPath() . "/templates/redirections.txt": $template;
-  }
+    /**
+     * Set values.
+     *
+     * @param $values
+     *
+     * @return $this
+     */
+    public function setValues($values)
+    {
+        $this->values = $values;
 
-  /**
-   * Set values.
-   *
-   * @param $values
-   *
-   * @return $this
-   */
-  public function setValues($values) {
-    $this->values = $values;
+        return $this;
+    }
 
-    return $this;
-  }
+    /**
+     * Set a template.
+     *
+     * @param $template
+     *
+     * @return $this
+     */
+    public function setTemplate($template, $values)
+    {
+        //@TODO: Take care if this template doesn't exist.
+        $this->$template = $this->getPath() . "/templates/{$template}.txt";
+        $this->setValues($values);
+        return $this;
+    }
 
-  /**
-   * Set a template.
-   *
-   * @param $template
-   *
-   * @return $this
-   */
-  public function setTemplate($template) {
-    $this->$template = $template;
+    /**
+     * Output the content according to the template used.
+     *
+     * @return mixed
+     */
+    public function output()
+    {
+        $file = file_get_contents($this->template);
+        $data = array_values($this->values);
+        $keys = $this->formatKeys(array_keys($this->values));
 
-    return $this;
-  }
+        return str_replace($keys, $data, $file);
+    }
 
-  /**
-   * Output the content according to the template used.
-   *
-   * @return mixed
-   */
-  public function output() {
-    $file = file_get_contents($this->template);
-    $data = array_values($this->values);
-    $keys = $this->formatKeys(array_keys($this->values));
+    /**
+     * Get the current file path.
+     *
+     * @return bool|string
+     */
+    protected function getPath()
+    {
+        return realpath(dirname(__FILE__));
+    }
 
-    return str_replace($keys, $data, $file);
-  }
+    /**
+     * Format keys to match the tags used.
+     * ºº
+     * @param $keys
+     *
+     * @return array
+     */
+    protected function formatKeys($keys)
+    {
+        $format = "{$this->oTag}%s{$this->cTag}";
 
-  /**
-   * Get the current file path.
-   *
-   * @return bool|string
-   */
-  protected function getPath() {
-    return realpath(dirname(__FILE__));
-  }
+        $keys = array_map(function ($key) use ($format) {
+            return sprintf($format, $key);
+        }, $keys);
 
-  /**
-   * Format keys to match the tags used.
-   * ºº
-   * @param $keys
-   *
-   * @return array
-   */
-  protected function formatKeys($keys) {
-    $format = "{$this->oTag}%s{$this->cTag}";
-
-    $keys = array_map(function ($key) use($format) {
-      return sprintf($format, $key);
-    }, $keys);
-
-    return $keys;
-  }
+        return $keys;
+    }
 }

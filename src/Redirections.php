@@ -1,11 +1,27 @@
 <?php namespace Pepeloper;
 
+use Pepeloper\CsvParser\Csv;
+use Pepeloper\TemplateParser\Template;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Redirections extends Command
 {
+
+    /**
+     * The CSV file parser.
+     *
+     * @var \Pepeloper\CsvParser\Csv
+     */
+    protected $csv;
+
+    public function __construct(Template $template, Csv $csv)
+    {
+        $this->csv = $csv;
+
+        parent::__construct($template);
+    }
 
     /**
      * Configure the command.
@@ -57,6 +73,6 @@ class Redirections extends Command
             }
         }
 
-        return !empty($values) ? $this->template->setTemplate("redirecciones", $values)->output() : '';
+        return !empty($values) ? $this->template->setTemplate("redirections", $values)->output() : '';
     }
 }

@@ -56,14 +56,16 @@ class Template
      * Set a template.
      *
      * @param $template
+     * @param $values
      *
      * @return $this
      */
-    public function setTemplate($template, $values)
+    public function setTemplate($template, $values = [])
     {
         //@TODO: Take care if this template doesn't exist.
-        $this->$template = $this->getPath() . "/templates/{$template}.txt";
+        $this->template = $this->getPath() . "/templates/{$template}.txt";
         $this->setValues($values);
+
         return $this;
     }
 

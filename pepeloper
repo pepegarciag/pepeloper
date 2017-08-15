@@ -4,6 +4,7 @@
 
 use Pepeloper\CsvParser\Csv;
 use Pepeloper\TemplateParser\Template;
+use Goutte\Client;
 use Symfony\Component\Console\Application;
 
 if (file_exists(__DIR__ . '/../../autoload.php')) {
@@ -13,10 +14,13 @@ if (file_exists(__DIR__ . '/../../autoload.php')) {
 }
 
 $template = new Template();
-$csv = new Csv();
 
 $app = new Application('Pepeloper', '1.0');
 
+$csv = new Csv();
 $app->add(new Pepeloper\Redirections($template, $csv));
+
+$client = new Client();
+$app->add(new Pepeloper\LaDrupalera($template, $client));
 
 $app->run();

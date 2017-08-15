@@ -1,6 +1,5 @@
 <?php namespace Pepeloper;
 
-use Pepeloper\CsvParser\Csv;
 use Pepeloper\TemplateParser\Template;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
@@ -15,20 +14,13 @@ class Command extends SymfonyCommand
     protected $template;
 
     /**
-     * @var \Pepeloper\CsvParser\Csv
-     */
-    protected $csv;
-
-    /**
      * Create a new Command instance.
      *
      * @param Template $template
-     * @param Csv $csv
      */
-    public function __construct(Template $template, Csv $csv)
+    public function __construct(Template $template)
     {
         $this->template = $template;
-        $this->csv = $csv;
 
         parent::__construct();
     }
